@@ -20,7 +20,7 @@ nav {
     position: fixed;
     top: 0;
     width: 100%;
-    background: rgba(253, 246, 240, 0.85);
+    background: rgba(253, 246, 240, 0.95);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -52,6 +52,11 @@ nav .logo:hover {
     transform: scale(1.1);
 }
 
+nav .nav-links {
+    display: flex;
+    align-items: center;
+}
+
 nav a {
     color: #4A3728;
     text-decoration: none;
@@ -73,7 +78,8 @@ nav a::after {
     transition: width 0.35s ease;
 }
 
-nav a:hover::after {
+nav a:hover::after,
+nav a.active::after {
     width: 100%;
 }
 
@@ -81,13 +87,24 @@ nav a.active {
     color: #C57C50;
 }
 
-nav a.active::after {
-    width: 100%;
+/* ====== Botón hamburguesa para móvil ====== */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+}
+
+.hamburger div {
+    width: 25px;
+    height: 3px;
+    background: #4A3728;
+    transition: all 0.3s ease;
 }
 
 /* ====== Secciones ====== */
 section {
-    padding: 5rem 6vw;
+    padding: 6rem 6vw;
     max-width: 1200px;
     margin: 0 auto 3rem auto;
     border-radius: 15px;
@@ -113,7 +130,7 @@ p {
     align-items: center;
     gap: 3rem;
     background: linear-gradient(120deg, #FDF6F0 0%, #FCEDE5 100%);
-    padding: 6rem 6vw;
+    padding: 6rem 6vw 3rem 6vw;
     border-radius: 20px;
 }
 
@@ -133,23 +150,28 @@ p {
     transform: translateY(-5px) scale(1.05);
 }
 
-/* ====== Tarjetas experiencia / educación / habilidades ====== */
+/* ====== Flip Cards Experiencia ====== */
 .cards-scroll {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2.5rem;
     padding-bottom: 2rem;
+    perspective: 1000px;
 }
 
-/* ====== Flip card para experiencia ====== */
 .card {
-    perspective: 1000px;
+    background: linear-gradient(145deg, #FFF5EE, #FCEEE3);
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(197, 124, 80, 0.15);
+    transition: transform 0.5s, box-shadow 0.3s;
+    cursor: pointer;
 }
 
 .card-inner {
     position: relative;
     width: 100%;
-    height: 200px;
+    height: 250px;
+    text-align: center;
     transition: transform 0.8s;
     transform-style: preserve-3d;
 }
@@ -164,13 +186,15 @@ p {
     height: 100%;
     backface-visibility: hidden;
     border-radius: 20px;
-    padding: 1.5rem;
-    box-shadow: 0 10px 25px rgba(197, 124, 80, 0.15);
-    background: linear-gradient(145deg, #FFF5EE, #FCEEE3);
-    color: #4A3728;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
 }
 
 .card-back {
+    background: #FDECE0;
     transform: rotateY(180deg);
 }
 
@@ -183,24 +207,28 @@ p {
     box-shadow: 0 10px 25px rgba(197, 124, 80, 0.15);
 }
 
-/* ====== Logros / Certificaciones ====== */
+/* ====== Logros ====== */
+#logros {
+    background: linear-gradient(145deg, #FDF6F0, #FDECE0);
+    padding: 6rem 6vw;
+    border-radius: 20px;
+    text-align: center;
+}
+
 .logros {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
     margin-top: 2rem;
-    justify-items: center;
 }
 
 .logro {
-    background: linear-gradient(145deg, #FFF5EE, #FCEEE3);
-    border-radius: 20px;
-    padding: 2rem;
-    text-align: center;
+    background: #FFF5EE;
+    border-radius: 15px;
+    padding: 1rem 1.5rem;
     box-shadow: 0 10px 25px rgba(197, 124, 80, 0.15);
-    transition: transform 0.4s, box-shadow 0.3s;
-    font-weight: 700;
-    color: #4A3728;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .logro:hover {
@@ -208,7 +236,7 @@ p {
     box-shadow: 0 14px 30px rgba(197, 124, 80, 0.25);
 }
 
-/* ====== Contacto estilo premium ====== */
+/* ====== Contacto ====== */
 #contacto {
     background: linear-gradient(145deg, #FDF6F0, #FDECE0);
     padding: 6rem 6vw;
@@ -274,7 +302,7 @@ p {
     #inicio {
         grid-template-columns: 1fr;
         text-align: center;
-        padding: 4rem 4vw;
+        padding: 8rem 4vw 3rem 4vw;
     }
 
     .foto-perfil {
@@ -284,13 +312,33 @@ p {
     }
 
     nav {
-        flex-direction: column;
+        flex-direction: row;
         padding: 1rem 2rem;
     }
 
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(253,246,240,0.95);
+        flex-direction: column;
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.3s ease;
+    }
+
+    .nav-links.show {
+        max-height: 500px;
+    }
+
     nav a {
-        margin: 0.8rem 0;
+        margin: 1rem 0;
         font-size: 1.1rem;
+    }
+
+    .hamburger {
+        display: flex;
     }
 
     .contact-info {
@@ -298,3 +346,4 @@ p {
         gap: 1.5rem;
     }
 }
+
